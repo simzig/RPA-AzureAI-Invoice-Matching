@@ -1,28 +1,40 @@
-# RPA-AzureAI-Invoice-Matching
+## Rapport de Projet : Automatisation du Rapprochement de Factures Fournisseurs (POC)
 
-## 🎯 Project Overview
-Ce projet est un Proof of Concept (POC) d'automatisation (RPA) conçu pour le rapprochement de factures fournisseurs. Il utilise l'intelligence artificielle pour extraire les données de PDF et les compare de manière automatisée avec les bases de données d'un ERP.
+### 1. Contexte et Problématique Opérationnelle
+Actuellement, le département approvisionnement valide manuellement l'intégralité des factures fournisseurs. Ce processus soulève plusieurs défis majeurs :
 
-## ⚙️ Tech Stack
-* **Langage :** Python 3
-* **IA & OCR :** Azure AI Document Intelligence
-* **Data Processing :** Pandas, Numpy
-* **Reporting :** OpenPyXL
+*   **Volume critique :** Plusieurs centaines de factures sont réceptionnées mensuellement pour chaque environnement.
+*   **Goulot d'étranglement :** Une seule ressource est allouée à cette tâche.
+*   **Coût temporel élevé :** Le traitement manuel d'une facture prend en moyenne 4 minutes.
+*   **Flux tendu :** L'impossibilité d'anticiper le volume oblige les équipes à traiter les factures en urgence, uniquement à l'approche de leur date d'échéance.
+*   **Fiabilité de la donnée :** La monotonie de cette tâche sans valeur ajoutée augmente statistiquement le risque d'erreurs de saisie humaine.
 
-## 🚀 Fonctionnalités Clés
-* **Extraction OCR :** Analyse de documents PDF pour en extraire les métadonnées (Fournisseur, Lignes de facturation, Quantités, Prix unitaire).
-* **Rapprochement ERP :** Matching par références (CLX, CIL, CIP), vérification des quantités et des prix unitaires.
-* **Calcul automatique :** Déduction des frais de port unitaires et alertes basées sur une tolérance métier (>20%).
-* **Export Excel :** Génération de rapports d'audit avec mise en forme conditionnelle (Code couleur de validation).
+### 2. Objectif du Proof of Concept (POC)
+Le but de ce projet pilote est de démontrer, sur un environnement spécifique (Luxcos), qu'il est possible de réduire drastiquement la charge de travail manuel grâce à l'Intelligence Artificielle. L'objectif n'est pas de remplacer la validation, mais de générer une **shortlist de factures 100% fiables** destinées à être validées en masse par le département IT.
 
-## 🛣️ Roadmap de mise en production (Handover)
-Ce projet est un POC fonctionnel. Les optimisations architecturales suivantes sont prévues pour le passage en production par les futures équipes :
-* **Sécurité :** Migration de la clé API Azure codée en dur vers un gestionnaire de variables d'environnement (`.env` via `python-dotenv`).
-* **Traçabilité :** Remplacement des sorties console (`print`) par le module standard `logging` pour le suivi des exécutions serveur.
-* **Maintenabilité :** Implémentation du typage statique (Type Hinting) pour documenter le code et fiabiliser la reprise.
+### 3. Fonctionnement et Sécurité du Processus
+L'automatisation repose sur une logique de sécurité stricte :
+1.  **Extraction OCR (Azure AI) :** Numérisation et lecture intelligente des données de la facture (sans erreur de frappe).
+2.  **Rapprochement Base de Données :** L'algorithme croise les données lues avec les commandes enregistrées dans l'ERP.
+3.  **Filtre de Sécurité Stricte :** Une facture n'est classée "Éligible à l'automatisation" que si la correspondance est parfaite (Référence exacte, Quantité identique, Prix unitaire validé). Toute exception bloque l'automatisation et renvoie la facture vers un traitement manuel.
 
-## 🛠️ Utilisation
-1. Cloner le dépôt : `git clone https://github.com/VOTRE_NOM/RPA-AzureAI-Invoice-Matching.git`
-2. Installer les dépendances : `pip install pandas openpyxl azure-ai-formrecognizer`
-3. Renseigner vos propres identifiants Azure (`ENDPOINT` et `KEY`) dans le script principal.
-4. Placer les factures PDF dans un dossier `/facture_test` et lancer l'analyse.
+### 4. Résultats de l'Analyse
+L'algorithme a été exécuté sur un jeu de test représentatif composé de plusieurs centaines de factures réelles.
+
+**[INSÉRER GRAPHIQUE 1 : Répartition des statuts de validation (Automatique vs Manuel)]**
+
+*   **60% de Validation Automatique :** Ces factures correspondent parfaitement aux données de l'ERP et sont intégrées à la shortlist pour validation IT en masse.
+*   **40% de Traitement Manuel :** Ces factures présentent des anomalies légitimes (changement de tarification fournisseur, exceptions métier, surcoût de transport) justifiant l'intervention humaine.
+
+### 5. Impact et Gain d'Efficacité
+
+| Indicateur | Processus Manuel (Avant) | Processus Automatisé (Après) |
+| :--- | :--- | :--- |
+| **Charge de travail** | 100% des factures vérifiées à la main | Seules les factures problématiques (40%) sont traitées |
+| **Temps alloué** | ~4 min par facture (Toutes factures) | ~4 min par facture (Uniquement sur les cas complexes) |
+| **Fiabilité** | Risque d'erreur de saisie humaine | Comparaison mathématique stricte par l'algorithme |
+| **Gestion des flux** | Traitement en retard / Flux tendu | Dégagement de temps pour anticiper les échéances |
+
+### 6. Prochaines Étapes
+1.  Transmission de la "shortlist" générée au département IT pour implémentation d'une routine de validation en masse dans l'ERP.
+2.  Adaptation et extension du script aux autres bases de données et environnements de production.
