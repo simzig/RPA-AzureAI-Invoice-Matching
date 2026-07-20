@@ -29,9 +29,9 @@ L'algorithme a été exécuté sur un jeu de test représentatif composé de plu
 *   **40% de Traitement Manuel :** Ces factures présentent des anomalies majeures ou non tolérées (changement de tarification fournisseur important, exceptions métier, surcoût de transport) justifiant l'intervention humaine.
 
 ### 5. Analyse des Coûts et Impact Opérationnel
-Le modèle économique de cette solution repose sur un retour sur investissement (ROI) quasi immédiat en comparant le coût d'exécution machine au coût du travail humain.
+Le modèle économique de cette solution repose sur un retour sur investissement (ROI) immédiat en comparant le coût d'exécution machine au coût du travail humain.
 
-*   **Coût technologique (Azure AI) :** La tarification de l'API Document Intelligence est facturée à l'usage, représentant un coût opérationnel marginal (de l'ordre de quelques dizaines d'euros pour plusieurs milliers de factures).
+*   **Coût technologique (Azure AI) :** La tarification de l'API Document Intelligence (modèle Invoice) est d'environ 0,01 € par page. Avec un quota gratuit de 500 pages par mois, le coût de traitement de 1000 factures s'élève à 5 € environ. Le coût d'infrastructure est donc marginal.
 *   **Économie de temps humain :** Le traitement manuel de 1000 factures requiert approximativement 66 heures de travail (à raison de 4 min/facture). L'automatisation de 60% de ce volume permet de réallouer environ 40 heures par mois et par environnement vers des tâches à plus haute valeur ajoutée.
 *   **Gain de fiabilité :** Application systématique et stricte des règles de gestion, éliminant le risque d'erreur de saisie humaine.
 
