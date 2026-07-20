@@ -38,7 +38,7 @@ Le modèle économique de cette solution repose sur un retour sur investissement
 ### 6. Architecture Technique et Utilisation des Scripts
 Le POC est architecturé autour de deux scripts distincts pour optimiser les coûts de développement et séparer les phases de test de la production :
 
-*   **`Script_AnalyseV18.py` (Production) :** Script complet de bout en bout. Il envoie les factures PDF à l'API Azure AI pour extraire les données, puis exécute l'algorithme de rapprochement métier.
+*   **`Script_AnalyseV18.py` (Production) :** Script d'analyse de bout en bout. Il envoie les factures PDF à l'API Azure AI pour extraire les données, puis exécute l'algorithme de rapprochement métier.
 *   **`test_matching_V18.py` (Simulateur) :** Script de développement dédié aux tests. Il permet d'affiner l'algorithme de comparaison (logique de tolérance, calcul du transport) en se basant sur une extraction Azure préexistante. Cela évite de relancer des appels API coûteux en crédits à chaque essai.
 
 **Origine des données (ERP SDC) :**
@@ -52,8 +52,16 @@ La mise en production effective nécessite de résoudre deux goulots d'étrangle
 1.  **Automatisation de la validation sur Adfinity :** Actuellement, la validation s'opère en deux temps : sur notre ERP interne (qui supporte la validation en masse) et sur le logiciel de comptabilité Adfinity. Adfinity ne permettant aujourd'hui qu'une validation unitaire manuelle, une adaptation de leur solution (via import ou API) est requise pour traiter la shortlist de manière groupée.
 2.  **Sourcing automatisé des documents :** Pour les tests, les PDF ont été téléchargés manuellement. Pour un processus "End-to-End", le script devra pouvoir récupérer ces fichiers automatiquement, soit via l'accès à un dossier réseau d'Adfinity, soit en interceptant directement les pièces jointes à leur réception dans la boîte mail générique.
 
-### 8. Prochaines Étapes et Vision à Long Terme
-Une fois la fiabilité d'Azure AI démontrée et validée sur le processus d'approvisionnement, l'outil a vocation à être déployé plus largement au sein du département comptabilité. 
+### 8. Roadmap Technique du Code
+Les prochaines itérations du script se concentreront sur la fiabilisation du pipeline de données et l'affinage des algorithmes :
+
+*   **Filtrage natif des données ERP :** Intégration des filtres de statut (`Réception : Oui` et `Validation facture : Non`) directement dans l'algorithme (via Pandas) pour éliminer l'étape de préparation manuelle de l'extraction SDC.
+*   **Matrice de tolérance dynamique :** Remplacement de la tolérance fixe sur le prix unitaire par une tolérance dégressive indexée sur le montant total de la facture. Par exemple : un écart de 30% peut être accepté sur une facture de moins de 500€, tandis qu'une tolérance beaucoup plus stricte sera exigée pour une facture dépassant 5000€.
+*   **Export d'intégration (Format IT) :** Génération d'un fichier secondaire (format CSV ou txt) contenant exclusivement la shortlist des factures validées, structuré selon les spécifications requises par l'équipe IT pour permettre un import direct dans l'ERP/Adfinity, séparant ainsi l'audit visuel (Excel) de l'intégration machine.
+*   **Gestion du cycle de vie des fichiers :** Implémentation d'un système de déplacement des PDF après traitement vers des répertoires de stockage distincts (ex: `/archive_succes`, `/erreur_a_traiter`).
+
+### 9. Vision Stratégique à Long Terme
+Une fois la fiabilité d'Azure AI démontrée et validée sur le processus d'approvisionnement, la technologie a vocation à être déployée plus largement au sein du département comptabilité. 
 
 Les capacités de l'intelligence artificielle permettent de cibler d'autres tâches manuelles redondantes, telles que :
 *   Le tri et la classification automatique des documents comptables dès leur réception par email.
