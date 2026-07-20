@@ -1,0 +1,12 @@
+# Fichiers de données et résultats (Sécurité)
+*.xlsx
+*.pdf
+/facture_test/
+/facture_multi/
+
+# Environnement et clés d'API
+.env
+
+# Fichiers systèmes et cache Python
+__pycache__/
+*.pyc
