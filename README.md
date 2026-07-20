@@ -42,7 +42,7 @@ Le POC est architecturé autour de deux scripts distincts pour optimiser les co�
 *   **`test_matching_V18.py` (Simulateur) :** Script de développement dédié aux tests. Il permet d'affiner l'algorithme de comparaison (logique de tolérance, calcul du transport) en se basant sur une extraction Azure préexistante. Cela évite de relancer des appels API coûteux en crédits à chaque essai.
 
 **Origine des données (ERP SDC) :**
-Les fichiers de comparaison (ex: `Book2.xlsx`, `recep_lx.xlsx`) sont des extractions directes de l'ERP interne (SDC).
+Les fichiers de comparaison (ex: `Book2.xlsx`) sont des extractions directes de l'ERP interne (SDC).
 *   **Chemin d'extraction :** Section *Cdes fournisseur* > *Recherche Réceptions Fournisseur*.
 *   **Prérequis de filtrage manuel :** En l'état actuel du développement, l'export Excel doit être filtré manuellement avant traitement par le script, en appliquant les critères suivants : `Réception : Oui` et `Validation facture : Non`.
 
